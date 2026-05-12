@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, ArrowRight, Clock, Loader2 } from "lucide-react";
 
+const extractImageUrl = (description: string) => {
+  const match = description.match(/<img[^>]+src="([^">]+)"/);
+  return match ? match[1] : null;
+};
+
 // Animation settings consistent with your other pages
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -74,7 +79,7 @@ const Blog = () => {
                   {/* Article Thumbnail */}
                   <div className="aspect-video mb-4 overflow-hidden rounded-lg bg-muted">
                     <img 
-                    src={post.thumbnail || "/placeholder.svg"} 
+                    src={post.thumbnail || extractImageUrl(post.description) || "/placeholder.svg"} 
                     alt={post.title} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                     onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
